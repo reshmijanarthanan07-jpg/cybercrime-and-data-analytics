@@ -1,0 +1,1083 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cybercrime & Data Analytics Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #222;
+        }
+
+        .header {
+            background: #1f2937;
+            color: white;
+            padding: 22px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 26px;
+        }
+
+        .top-buttons {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            text-decoration: none;
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .container {
+            width: 92%;
+            margin: auto;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            margin: 0 0 10px;
+            font-size: 15px;
+            color: #666;
+        }
+
+        .card p {
+            margin: 0;
+            font-size: 28px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .section h2 {
+            margin-top: 0;
+            color: #1f2937;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .analytics-card {
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 8px;
+            border-left: 5px solid #2563eb;
+        }
+
+        .analytics-card h3 {
+            margin: 0 0 8px;
+            font-size: 15px;
+            color: #555;
+        }
+
+        .analytics-card p {
+            margin: 4px 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .chart-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .chart-box h2 {
+            margin-top: 0;
+            font-size: 19px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 320px;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-row input,
+        .filter-row select {
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .clear-btn {
+            border: none;
+            background: #6b7280;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .clear-btn:hover {
+            background: #4b5563;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #1f2937;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .edit-btn,
+        .delete-btn {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+            font-size: 12px;
+        }
+
+        .edit-btn {
+            background: #16a34a;
+        }
+
+        .delete-btn {
+            background: #dc2626;
+        }
+
+        .prediction-box {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #7c3aed;
+        }
+
+        .prediction-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .prediction-form label {
+            font-weight: bold;
+        }
+
+        .prediction-form input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            width: 120px;
+        }
+
+        .prediction-btn {
+            border: none;
+            background: #7c3aed;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .prediction-btn:hover {
+            background: #6d28d9;
+        }
+
+        #predictionResult {
+            margin-top: 18px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #7c3aed;
+        }
+
+        #noResults {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+
+        @media (max-width: 900px) {
+            .summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .top-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        @media print {
+            .top-buttons,
+            .filter-row,
+            .edit-btn,
+            .delete-btn,
+            .prediction-box {
+                display: none !important;
+            }
+
+            body {
+                background: white;
+            }
+
+            .section,
+            .chart-box,
+            .card {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Cybercrime & Data Analytics</h1>
+    </div>
+
+    <div class="top-buttons">
+        <a href="/" class="btn">Home</a>
+
+        <div class="button-group">
+            <a href="/add" class="btn">+ Add New Data</a>
+
+            <button class="btn print-btn" onclick="window.print()">
+                Print / Save Report
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- Summary -->
+        <div class="summary">
+
+            <div class="card">
+                <h3>Total Cases</h3>
+                <p>{{ total_cases }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Crime Types</h3>
+                <p>{{ total_crime_types }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Locations</h3>
+                <p>{{ total_locations }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Years</h3>
+                <p>{{ total_years }}</p>
+            </div>
+
+        </div>
+
+
+        <!-- Key Analytics -->
+        <div class="section">
+
+            <h2>Key Analytics</h2>
+
+            <div class="analytics-grid">
+
+                <div class="analytics-card">
+                    <h3>Most Reported Crime</h3>
+                    <p>{{ most_reported_crime }}</p>
+                    <small>{{ most_reported_crime_cases }} cases</small>
+                </div>
+
+                <div class="analytics-card">
+                    <h3>Most Affected Location</h3>
+                    <p>{{ most_affected_location }}</p>
+                    <small>{{ most_affected_location_cases }} cases</small>
+                </div>
+
+                <div class="analytics-card">
+                    <h3>Highest Crime Year</h3>
+                    <p>{{ highest_crime_year }}</p>
+                    <small>{{ highest_crime_year_cases }} cases</small>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Prediction -->
+        <div class="section">
+
+            <h2>Cybercrime Case Prediction</h2>
+
+            <div class="prediction-box">
+
+                <p>
+                    Enter a future year to estimate the number of cybercrime cases
+                    based on the available historical data.
+                </p>
+
+                <div class="prediction-form">
+
+                    <label for="predictionYear">
+                        Future Year:
+                    </label>
+
+                    <input
+                        type="number"
+                        id="predictionYear"
+                        min="2027"
+                        placeholder="2027"
+                    >
+
+                    <button
+                        class="prediction-btn"
+                        onclick="predictCases()"
+                    >
+                        Predict Cases
+                    </button>
+
+                </div>
+
+                <div id="predictionResult"></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Charts -->
+        <div class="chart-grid">
+
+            <div class="chart-box">
+                <h2>Crime Type Analysis</h2>
+
+                <div class="chart-container">
+                    <canvas id="crimeChart"></canvas>
+                </div>
+            </div>
+
+
+            <div class="chart-box">
+                <h2>Location Analysis</h2>
+
+                <div class="chart-container">
+                    <canvas id="locationChart"></canvas>
+                </div>
+            </div>
+
+
+            <div class="chart-box">
+                <h2>Year-wise Analysis</h2>
+
+                <div class="chart-container">
+                    <canvas id="yearChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Records -->
+        <div class="section">
+
+            <h2>Cybercrime Records</h2>
+
+            <!-- Filters -->
+            <div class="filter-row">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search crime type or location..."
+                >
+
+                <select id="yearFilter">
+                    <option value="">All Years</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                </select>
+
+                <select id="crimeFilter">
+
+                    <option value="">All Crime Types</option>
+
+                    <option value="Phishing">
+                        Phishing
+                    </option>
+
+                    <option value="Hacking">
+                        Hacking
+                    </option>
+
+                    <option value="Online Fraud">
+                        Online Fraud
+                    </option>
+
+                    <option value="Identity Theft">
+                        Identity Theft
+                    </option>
+
+                    <option value="Cyber Bullying">
+                        Cyber Bullying
+                    </option>
+
+                    <option value="Online Scam">
+                        Online Scam
+                    </option>
+
+                    <option value="Ransomware">
+                        Ransomware
+                    </option>
+
+                </select>
+
+
+                <select id="locationFilter">
+
+                    <option value="">
+                        All Locations
+                    </option>
+
+                    <option value="Chennai">
+                        Chennai
+                    </option>
+
+                    <option value="Coimbatore">
+                        Coimbatore
+                    </option>
+
+                    <option value="Salem">
+                        Salem
+                    </option>
+
+                    <option value="Madurai">
+                        Madurai
+                    </option>
+
+                    <option value="Erode">
+                        Erode
+                    </option>
+
+                </select>
+
+
+                <button
+                    class="clear-btn"
+                    onclick="clearFilters()"
+                >
+                    Clear Filters
+                </button>
+
+            </div>
+
+
+            <!-- Table -->
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Crime Type</th>
+                            <th>Location</th>
+                            <th>Year</th>
+                            <th>Cases</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for record in records %}
+
+                        <tr class="data-row">
+
+                            <td>
+                                {{ record[0] }}
+                            </td>
+
+                            <td>
+                                {{ record[1] }}
+                            </td>
+
+                            <td>
+                                {{ record[2] }}
+                            </td>
+
+                            <td>
+                                {{ record[3] }}
+                            </td>
+
+                            <td>
+                                {{ record[4] }}
+                            </td>
+
+                            <td>
+
+                                <a
+                                    href="/edit/{{ record[0] }}"
+                                    class="edit-btn"
+                                >
+                                    Edit
+                                </a>
+
+                                <a
+                                    href="/delete/{{ record[0] }}"
+                                    class="delete-btn"
+                                    onclick="return confirm('Are you sure you want to delete this record?')"
+                                >
+                                    Delete
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                <div id="noResults">
+                    No matching records found.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // Crime Type Chart
+        const crimeCtx =
+            document.getElementById("crimeChart");
+
+        new Chart(crimeCtx, {
+
+            type: "bar",
+
+            data: {
+
+                labels:
+                    {{ crime_labels | tojson }},
+
+                datasets: [{
+
+                    label: "Number of Cases",
+
+                    data:
+                        {{ crime_values | tojson }}
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                scales: {
+
+                    y: {
+                        beginAtZero: true
+                    }
+
+                }
+
+            }
+
+        });
+
+
+        // Location Chart
+        const locationCtx =
+            document.getElementById("locationChart");
+
+        new Chart(locationCtx, {
+
+            type: "pie",
+
+            data: {
+
+                labels:
+                    {{ location_labels | tojson }},
+
+                datasets: [{
+
+                    label: "Cases",
+
+                    data:
+                        {{ location_values | tojson }}
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false
+
+            }
+
+        });
+
+
+        // Year Chart
+        const yearCtx =
+            document.getElementById("yearChart");
+
+        new Chart(yearCtx, {
+
+            type: "line",
+
+            data: {
+
+                labels:
+                    {{ year_labels | tojson }},
+
+                datasets: [{
+
+                    label: "Cases",
+
+                    data:
+                        {{ year_values | tojson }},
+
+                    fill: false,
+
+                    tension: 0.3
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                scales: {
+
+                    y: {
+                        beginAtZero: true
+                    }
+
+                }
+
+            }
+
+        });
+
+
+        // Filters
+        const searchInput =
+            document.getElementById("searchInput");
+
+        const yearFilter =
+            document.getElementById("yearFilter");
+
+        const crimeFilter =
+            document.getElementById("crimeFilter");
+
+        const locationFilter =
+            document.getElementById("locationFilter");
+
+        const noResults =
+            document.getElementById("noResults");
+
+
+        searchInput.addEventListener(
+            "input",
+            filterTable
+        );
+
+        yearFilter.addEventListener(
+            "change",
+            filterTable
+        );
+
+        crimeFilter.addEventListener(
+            "change",
+            filterTable
+        );
+
+        locationFilter.addEventListener(
+            "change",
+            filterTable
+        );
+
+
+        function filterTable() {
+
+            const searchText =
+                searchInput.value
+                .toLowerCase()
+                .trim();
+
+            const selectedYear =
+                yearFilter.value.trim();
+
+            const selectedCrime =
+                crimeFilter.value
+                .toLowerCase()
+                .trim();
+
+            const selectedLocation =
+                locationFilter.value
+                .toLowerCase()
+                .trim();
+
+
+            const rows =
+                document.querySelectorAll(".data-row");
+
+
+            let visibleRows = 0;
+
+
+            rows.forEach(function(row) {
+
+                const crimeType =
+                    row.cells[1]
+                    .textContent
+                    .toLowerCase()
+                    .trim();
+
+                const location =
+                    row.cells[2]
+                    .textContent
+                    .toLowerCase()
+                    .trim();
+
+                const year =
+                    row.cells[3]
+                    .textContent
+                    .trim();
+
+
+                const searchMatch =
+                    searchText === "" ||
+                    crimeType.includes(searchText) ||
+                    location.includes(searchText);
+
+
+                const yearMatch =
+                    selectedYear === "" ||
+                    year === selectedYear;
+
+
+                const crimeMatch =
+                    selectedCrime === "" ||
+                    crimeType === selectedCrime;
+
+
+                const locationMatch =
+                    selectedLocation === "" ||
+                    location === selectedLocation;
+
+
+                const showRow =
+                    searchMatch &&
+                    yearMatch &&
+                    crimeMatch &&
+                    locationMatch;
+
+
+                if (showRow) {
+
+                    row.style.display = "";
+
+                    visibleRows++;
+
+                } else {
+
+                    row.style.display = "none";
+
+                }
+
+            });
+
+
+            if (visibleRows === 0) {
+
+                noResults.style.display = "block";
+
+            } else {
+
+                noResults.style.display = "none";
+
+            }
+
+        }
+
+
+        function clearFilters() {
+
+            searchInput.value = "";
+
+            yearFilter.value = "";
+
+            crimeFilter.value = "";
+
+            locationFilter.value = "";
+
+            filterTable();
+
+        }
+
+
+        // Prediction
+        function predictCases() {
+
+            const input =
+                document.getElementById(
+                    "predictionYear"
+                );
+
+            const result =
+                document.getElementById(
+                    "predictionResult"
+                );
+
+
+            const year =
+                parseInt(input.value);
+
+
+            if (!year || year < 2027) {
+
+                result.textContent =
+                    "Please enter a year from 2027 onwards.";
+
+                return;
+
+            }
+
+
+            const years =
+                {{ year_labels | tojson }};
+
+            const cases =
+                {{ year_values | tojson }};
+
+
+            if (years.length < 2) {
+
+                result.textContent =
+                    "Not enough historical data for prediction.";
+
+                return;
+
+            }
+
+
+            const n =
+                years.length;
+
+
+            const sumX =
+                years.reduce(
+                    (sum, value) =>
+                        sum + Number(value),
+                    0
+                );
+
+
+            const sumY =
+                cases.reduce(
+                    (sum, value) =>
+                        sum + Number(value),
+                    0
+                );
+
+
+            let sumXY = 0;
+
+            let sumX2 = 0;
+
+
+            for (let i = 0; i < n; i++) {
+
+                sumXY +=
+                    Number(years[i]) *
+                    Number(cases[i]);
+
+                sumX2 +=
+                    Number(years[i]) *
+                    Number(years[i]);
+
+            }
+
+
+            const denominator =
+                (n * sumX2) -
+                (sumX * sumX);
+
+
+            if (denominator === 0) {
+
+                result.textContent =
+                    "Prediction cannot be calculated.";
+
+                return;
+
+            }
+
+
+            const slope =
+                ((n * sumXY) -
+                (sumX * sumY)) /
+                denominator;
+
+
+            const intercept =
+                (sumY -
+                (slope * sumX)) /
+                n;
+
+
+            let prediction =
+                (slope * year) +
+                intercept;
+
+
+            prediction =
+                Math.max(
+                    0,
+                    Math.round(prediction)
+                );
+
+
+            result.innerHTML =
+                "Predicted cybercrime cases for " +
+                year +
+                ": <strong>" +
+                prediction +
+                " cases</strong>";
+
+        }
+
+    </script>
+
+</body>
+</html>
+```

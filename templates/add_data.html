@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Cybercrime Data</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+        }
+
+        .header {
+            background: #111827;
+            color: white;
+            padding: 22px 35px;
+        }
+
+        .container {
+            width: 500px;
+            max-width: 90%;
+            margin: 40px auto;
+        }
+
+        .form-box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background: #111827;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Cybercrime Analytics</h1>
+    </div>
+
+    <div class="container">
+
+        <div class="form-box">
+
+            <h2>Add New Cybercrime Data</h2>
+
+            <form method="POST">
+
+                <label>Crime Type</label>
+                <input type="text" name="crime_type" placeholder="Example: Phishing" required>
+
+                <label>Location</label>
+                <input type="text" name="location" placeholder="Example: Chennai" required>
+
+                <label>Year</label>
+                <input type="number" name="year" placeholder="Example: 2026" required>
+
+                <label>Number of Cases</label>
+                <input type="number" name="cases" placeholder="Example: 100" required>
+
+                <button type="submit">Add Data</button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

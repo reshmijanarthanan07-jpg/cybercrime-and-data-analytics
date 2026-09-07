@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Cybercrime Data</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 500px;
+            margin: 60px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 12px;
+            background: #111827;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #374151;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #111827;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Edit Cybercrime Data</h1>
+
+    <form method="POST" action="/edit/{{ record[0] }}">
+
+        <label>Crime Type</label>
+        <input type="text"
+               name="crime_type"
+               value="{{ record[1] }}"
+               required>
+
+        <label>Location</label>
+        <input type="text"
+               name="location"
+               value="{{ record[2] }}"
+               required>
+
+        <label>Year</label>
+        <input type="number"
+               name="year"
+               value="{{ record[3] }}"
+               required>
+
+        <label>Cases</label>
+        <input type="number"
+               name="cases"
+               value="{{ record[4] }}"
+               required>
+
+        <button type="submit">Update Data</button>
+
+    </form>
+
+    <a class="back" href="/dashboard">← Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>
